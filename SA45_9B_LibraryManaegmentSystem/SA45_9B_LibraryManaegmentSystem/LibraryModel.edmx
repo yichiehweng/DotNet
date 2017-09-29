@@ -1,0 +1,391 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="LibraryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="ISBNNumber" />
+          </Key>
+          <Property Name="ISBNNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="BookTitle" Type="nvarchar" MaxLength="50" />
+          <Property Name="Genre" Type="nvarchar" MaxLength="10" />
+          <Property Name="Publisher" Type="nvarchar" MaxLength="50" />
+          <Property Name="Author" Type="nvarchar" MaxLength="50" />
+          <Property Name="BookLanguage" Type="nvarchar" MaxLength="20" />
+          <Property Name="CallNumber" Type="nvarchar" MaxLength="20" />
+          <Property Name="stockNumber" Type="smallint" />
+          <Property Name="RantedNumber" Type="smallint" />
+          <Property Name="BookID" Type="smallint" />
+          <Property Name="Category" Type="nvarchar" MaxLength="20" />
+          <Property Name="Edition" Type="nvarchar" MaxLength="20" />
+          <Property Name="PublicationDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="EmployeeName" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmployeePhoneNumber" Type="nvarchar" MaxLength="10" />
+          <Property Name="Title" Type="nvarchar" MaxLength="30" />
+          <Property Name="BirthDate" Type="datetime" />
+          <Property Name="EmployeeAddress" Type="nvarchar" MaxLength="60" />
+        </EntityType>
+        <EntityType Name="IssueTran">
+          <Key>
+            <PropertyRef Name="TransactionID" />
+          </Key>
+          <Property Name="TransactionID" Type="smallint" Nullable="false" />
+          <Property Name="MemberID" Type="nvarchar" MaxLength="4" />
+          <Property Name="ISBNNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmployeeID" Type="nvarchar" MaxLength="10" />
+          <Property Name="DateIssue" Type="datetime" />
+          <Property Name="DateDue" Type="datetime" />
+          <Property Name="DateActualReturn" Type="datetime" />
+          <Property Name="RentalStatus" Type="nvarchar" MaxLength="3" />
+          <Property Name="Remarks" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Member">
+          <Key>
+            <PropertyRef Name="MemberID" />
+          </Key>
+          <Property Name="MemberID" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="MemberName" Type="nvarchar" MaxLength="50" />
+          <Property Name="MemberCategory" Type="nvarchar" MaxLength="2" />
+          <Property Name="PhoneNumber" Type="nvarchar" MaxLength="9" />
+          <Property Name="PostAddress" Type="nvarchar" MaxLength="65" />
+          <Property Name="PostalCode" Type="nvarchar" MaxLength="6" />
+          <Property Name="EmailAddress" Type="nvarchar" MaxLength="50" />
+          <Property Name="Notes" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="UserMaster">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="LoginName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="UserPassWord" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="UserPhoneNumber" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <Association Name="FK__IssueTran__Emplo__34C8D9D1">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+          <End Role="IssueTran" Type="Self.IssueTran" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="IssueTran">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__IssueTran__ISBNN__33D4B598">
+          <End Role="Book" Type="Self.Book" Multiplicity="0..1" />
+          <End Role="IssueTran" Type="Self.IssueTran" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="ISBNNumber" />
+            </Principal>
+            <Dependent Role="IssueTran">
+              <PropertyRef Name="ISBNNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__IssueTran__Membe__35BCFE0A">
+          <End Role="Member" Type="Self.Member" Multiplicity="0..1" />
+          <End Role="IssueTran" Type="Self.IssueTran" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="MemberID" />
+            </Principal>
+            <Dependent Role="IssueTran">
+              <PropertyRef Name="MemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserMaste__Emplo__36B12243">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="UserMaster" Type="Self.UserMaster" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="UserMaster">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LibraryModelStoreContainer">
+          <EntitySet Name="Book" EntityType="Self.Book" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="IssueTran" EntityType="Self.IssueTran" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Member" EntityType="Self.Member" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserMaster" EntityType="Self.UserMaster" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__IssueTran__Emplo__34C8D9D1" Association="Self.FK__IssueTran__Emplo__34C8D9D1">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="IssueTran" EntitySet="IssueTran" />
+          </AssociationSet>
+          <AssociationSet Name="FK__IssueTran__ISBNN__33D4B598" Association="Self.FK__IssueTran__ISBNN__33D4B598">
+            <End Role="Book" EntitySet="Book" />
+            <End Role="IssueTran" EntitySet="IssueTran" />
+          </AssociationSet>
+          <AssociationSet Name="FK__IssueTran__Membe__35BCFE0A" Association="Self.FK__IssueTran__Membe__35BCFE0A">
+            <End Role="Member" EntitySet="Member" />
+            <End Role="IssueTran" EntitySet="IssueTran" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserMaste__Emplo__36B12243" Association="Self.FK__UserMaste__Emplo__36B12243">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="UserMaster" EntitySet="UserMaster" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="LibraryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="ISBNNumber" />
+          </Key>
+          <Property Name="ISBNNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BookTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Publisher" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Author" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BookLanguage" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CallNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="stockNumber" Type="Int16" />
+          <Property Name="RantedNumber" Type="Int16" />
+          <NavigationProperty Name="IssueTrans" Relationship="Self.FK__IssueTran__ISBNN__33D4B598" FromRole="Book" ToRole="IssueTran" />
+          <Property Name="Genre" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="BookID" Type="Int16" />
+          <Property Name="Category" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Edition" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="PublicationDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EmployeeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeePhoneNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="BirthDate" Type="DateTime" Precision="3" />
+          <Property Name="EmployeeAddress" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="IssueTrans" Relationship="Self.FK__IssueTran__Emplo__34C8D9D1" FromRole="Employees" ToRole="IssueTran" />
+          <NavigationProperty Name="UserMaster" Relationship="LibraryModel.FK__UserMaste__Emplo__36B12243" FromRole="Employee" ToRole="UserMaster" />
+        </EntityType>
+        <EntityType Name="IssueTran">
+          <Key>
+            <PropertyRef Name="TransactionID" />
+          </Key>
+          <Property Name="TransactionID" Type="Int16" Nullable="false" />
+          <Property Name="MemberID" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="ISBNNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="DateIssue" Type="DateTime" Precision="3" />
+          <Property Name="DateDue" Type="DateTime" Precision="3" />
+          <Property Name="DateActualReturn" Type="DateTime" Precision="3" />
+          <Property Name="RentalStatus" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Book" Relationship="Self.FK__IssueTran__ISBNN__33D4B598" FromRole="IssueTran" ToRole="Book" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK__IssueTran__Emplo__34C8D9D1" FromRole="IssueTran" ToRole="Employees" />
+          <NavigationProperty Name="Member" Relationship="LibraryModel.FK__IssueTran__Membe__35BCFE0A" FromRole="IssueTran" ToRole="Member" />
+        </EntityType>
+        <EntityType Name="Member">
+          <Key>
+            <PropertyRef Name="MemberID" />
+          </Key>
+          <Property Name="MemberID" Type="String" MaxLength="4" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MemberName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MemberCategory" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="PostAddress" Type="String" MaxLength="65" FixedLength="false" Unicode="true" />
+          <Property Name="PostalCode" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="EmailAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="IssueTrans" Relationship="LibraryModel.FK__IssueTran__Membe__35BCFE0A" FromRole="Member" ToRole="IssueTran" />
+        </EntityType>
+        <EntityType Name="UserMaster">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LoginName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserPassWord" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserPhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Employee" Relationship="LibraryModel.FK__UserMaste__Emplo__36B12243" FromRole="UserMaster" ToRole="Employee" />
+        </EntityType>
+        <Association Name="FK__IssueTran__ISBNN__33D4B598">
+          <End Role="Book" Type="Self.Book" Multiplicity="0..1" />
+          <End Role="IssueTran" Type="Self.IssueTran" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="ISBNNumber" />
+            </Principal>
+            <Dependent Role="IssueTran">
+              <PropertyRef Name="ISBNNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__IssueTran__Emplo__34C8D9D1">
+          <End Role="Employees" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="IssueTran" Type="Self.IssueTran" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="IssueTran">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LibraryEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Books" EntityType="Self.Book" />
+          <EntitySet Name="Employees" EntityType="Self.Employee" />
+          <EntitySet Name="IssueTrans" EntityType="Self.IssueTran" />
+          <EntitySet Name="Members" EntityType="Self.Member" />
+          <EntitySet Name="UserMasters" EntityType="Self.UserMaster" />
+          <AssociationSet Name="FK__IssueTran__ISBNN__33D4B598" Association="Self.FK__IssueTran__ISBNN__33D4B598">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="IssueTran" EntitySet="IssueTrans" />
+          </AssociationSet>
+          <AssociationSet Name="FK__IssueTran__Emplo__34C8D9D1" Association="Self.FK__IssueTran__Emplo__34C8D9D1">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="IssueTran" EntitySet="IssueTrans" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserMaste__Emplo__36B12243" Association="LibraryModel.FK__UserMaste__Emplo__36B12243">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="UserMaster" EntitySet="UserMasters" />
+          </AssociationSet>
+          <AssociationSet Name="FK__IssueTran__Membe__35BCFE0A" Association="LibraryModel.FK__IssueTran__Membe__35BCFE0A">
+            <End Role="Member" EntitySet="Members" />
+            <End Role="IssueTran" EntitySet="IssueTrans" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK__UserMaste__Emplo__36B12243">
+          <End Type="LibraryModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="LibraryModel.UserMaster" Role="UserMaster" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="UserMaster">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__IssueTran__Membe__35BCFE0A">
+          <End Type="LibraryModel.Member" Role="Member" Multiplicity="0..1" />
+          <End Type="LibraryModel.IssueTran" Role="IssueTran" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="MemberID" />
+            </Principal>
+            <Dependent Role="IssueTran">
+              <PropertyRef Name="MemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="LibraryModelStoreContainer" CdmEntityContainer="LibraryEntities">
+          <EntitySetMapping Name="Books">
+            <EntityTypeMapping TypeName="LibraryModel.Book">
+              <MappingFragment StoreEntitySet="Book">
+                <ScalarProperty Name="PublicationDate" ColumnName="PublicationDate" />
+                <ScalarProperty Name="Edition" ColumnName="Edition" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="BookID" ColumnName="BookID" />
+                <ScalarProperty Name="Genre" ColumnName="Genre" />
+                <ScalarProperty Name="ISBNNumber" ColumnName="ISBNNumber" />
+                <ScalarProperty Name="BookTitle" ColumnName="BookTitle" />
+                <ScalarProperty Name="Publisher" ColumnName="Publisher" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="BookLanguage" ColumnName="BookLanguage" />
+                <ScalarProperty Name="CallNumber" ColumnName="CallNumber" />
+                <ScalarProperty Name="stockNumber" ColumnName="stockNumber" />
+                <ScalarProperty Name="RantedNumber" ColumnName="RantedNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="LibraryModel.Employee">
+              <MappingFragment StoreEntitySet="Employees">
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="EmployeePhoneNumber" ColumnName="EmployeePhoneNumber" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="EmployeeAddress" ColumnName="EmployeeAddress" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IssueTrans">
+            <EntityTypeMapping TypeName="LibraryModel.IssueTran">
+              <MappingFragment StoreEntitySet="IssueTran">
+                <ScalarProperty Name="TransactionID" ColumnName="TransactionID" />
+                <ScalarProperty Name="MemberID" ColumnName="MemberID" />
+                <ScalarProperty Name="ISBNNumber" ColumnName="ISBNNumber" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="DateIssue" ColumnName="DateIssue" />
+                <ScalarProperty Name="DateDue" ColumnName="DateDue" />
+                <ScalarProperty Name="DateActualReturn" ColumnName="DateActualReturn" />
+                <ScalarProperty Name="RentalStatus" ColumnName="RentalStatus" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Members">
+            <EntityTypeMapping TypeName="LibraryModel.Member">
+              <MappingFragment StoreEntitySet="Member">
+                <ScalarProperty Name="MemberID" ColumnName="MemberID" />
+                <ScalarProperty Name="MemberName" ColumnName="MemberName" />
+                <ScalarProperty Name="MemberCategory" ColumnName="MemberCategory" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="PostAddress" ColumnName="PostAddress" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserMasters">
+            <EntityTypeMapping TypeName="LibraryModel.UserMaster">
+              <MappingFragment StoreEntitySet="UserMaster">
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="LoginName" ColumnName="LoginName" />
+                <ScalarProperty Name="UserPassWord" ColumnName="UserPassWord" />
+                <ScalarProperty Name="UserPhoneNumber" ColumnName="UserPhoneNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

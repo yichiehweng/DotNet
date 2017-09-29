@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="LibraryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Book">
+    <Key>
+      <PropertyRef Name="ISBNNumber" />
+    </Key>
+    <Property Name="ISBNNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="BookTitle" Type="nvarchar" MaxLength="50" />
+    <Property Name="Genre" Type="nvarchar" MaxLength="10" />
+    <Property Name="Publisher" Type="nvarchar" MaxLength="50" />
+    <Property Name="Author" Type="nvarchar" MaxLength="50" />
+    <Property Name="BookLanguage" Type="nvarchar" MaxLength="20" />
+    <Property Name="CallNumber" Type="nvarchar" MaxLength="20" />
+    <Property Name="stockNumber" Type="smallint" />
+    <Property Name="RantedNumber" Type="smallint" />
+    <Property Name="BookID" Type="smallint" />
+    <Property Name="Category" Type="nvarchar" MaxLength="20" />
+    <Property Name="Edition" Type="nvarchar" MaxLength="20" />
+    <Property Name="PublicationDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Employees">
+    <Key>
+      <PropertyRef Name="EmployeeID" />
+    </Key>
+    <Property Name="EmployeeID" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="EmployeeName" Type="nvarchar" MaxLength="50" />
+    <Property Name="EmployeePhoneNumber" Type="nvarchar" MaxLength="10" />
+    <Property Name="Title" Type="nvarchar" MaxLength="30" />
+    <Property Name="BirthDate" Type="datetime" />
+    <Property Name="EmployeeAddress" Type="nvarchar" MaxLength="60" />
+  </EntityType>
+  <EntityType Name="IssueTran">
+    <Key>
+      <PropertyRef Name="TransactionID" />
+    </Key>
+    <Property Name="TransactionID" Type="smallint" Nullable="false" />
+    <Property Name="MemberID" Type="nvarchar" MaxLength="4" />
+    <Property Name="ISBNNumber" Type="nvarchar" MaxLength="50" />
+    <Property Name="EmployeeID" Type="nvarchar" MaxLength="10" />
+    <Property Name="DateIssue" Type="datetime" />
+    <Property Name="DateDue" Type="datetime" />
+    <Property Name="DateActualReturn" Type="datetime" />
+    <Property Name="RentalStatus" Type="nvarchar" MaxLength="3" />
+    <Property Name="Remarks" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="Member">
+    <Key>
+      <PropertyRef Name="MemberID" />
+    </Key>
+    <Property Name="MemberID" Type="nvarchar" MaxLength="4" Nullable="false" />
+    <Property Name="MemberName" Type="nvarchar" MaxLength="50" />
+    <Property Name="MemberCategory" Type="nvarchar" MaxLength="2" />
+    <Property Name="PhoneNumber" Type="nvarchar" MaxLength="9" />
+    <Property Name="PostAddress" Type="nvarchar" MaxLength="65" />
+    <Property Name="PostalCode" Type="nvarchar" MaxLength="6" />
+    <Property Name="EmailAddress" Type="nvarchar" MaxLength="50" />
+    <Property Name="Notes" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="UserMaster">
+    <Key>
+      <PropertyRef Name="EmployeeID" />
+    </Key>
+    <Property Name="EmployeeID" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="LoginName" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="UserPassWord" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="UserPhoneNumber" Type="nvarchar" MaxLength="20" />
+  </EntityType>
+  <Association Name="FK__IssueTran__Emplo__34C8D9D1">
+    <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+    <End Role="IssueTran" Type="Self.IssueTran" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="EmployeeID" />
+      </Principal>
+      <Dependent Role="IssueTran">
+        <PropertyRef Name="EmployeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__IssueTran__ISBNN__33D4B598">
+    <End Role="Book" Type="Self.Book" Multiplicity="0..1" />
+    <End Role="IssueTran" Type="Self.IssueTran" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Book">
+        <PropertyRef Name="ISBNNumber" />
+      </Principal>
+      <Dependent Role="IssueTran">
+        <PropertyRef Name="ISBNNumber" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__IssueTran__Membe__35BCFE0A">
+    <End Role="Member" Type="Self.Member" Multiplicity="0..1" />
+    <End Role="IssueTran" Type="Self.IssueTran" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Member">
+        <PropertyRef Name="MemberID" />
+      </Principal>
+      <Dependent Role="IssueTran">
+        <PropertyRef Name="MemberID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__UserMaste__Emplo__36B12243">
+    <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+    <End Role="UserMaster" Type="Self.UserMaster" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="EmployeeID" />
+      </Principal>
+      <Dependent Role="UserMaster">
+        <PropertyRef Name="EmployeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="LibraryModelStoreContainer">
+    <EntitySet Name="Book" EntityType="Self.Book" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="IssueTran" EntityType="Self.IssueTran" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Member" EntityType="Self.Member" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserMaster" EntityType="Self.UserMaster" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__IssueTran__Emplo__34C8D9D1" Association="Self.FK__IssueTran__Emplo__34C8D9D1">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="IssueTran" EntitySet="IssueTran" />
+    </AssociationSet>
+    <AssociationSet Name="FK__IssueTran__ISBNN__33D4B598" Association="Self.FK__IssueTran__ISBNN__33D4B598">
+      <End Role="Book" EntitySet="Book" />
+      <End Role="IssueTran" EntitySet="IssueTran" />
+    </AssociationSet>
+    <AssociationSet Name="FK__IssueTran__Membe__35BCFE0A" Association="Self.FK__IssueTran__Membe__35BCFE0A">
+      <End Role="Member" EntitySet="Member" />
+      <End Role="IssueTran" EntitySet="IssueTran" />
+    </AssociationSet>
+    <AssociationSet Name="FK__UserMaste__Emplo__36B12243" Association="Self.FK__UserMaste__Emplo__36B12243">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="UserMaster" EntitySet="UserMaster" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

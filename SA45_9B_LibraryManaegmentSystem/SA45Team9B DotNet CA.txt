@@ -1,0 +1,44 @@
+Summary
+The project of SA45  Team 9B contains 10 main forms and 5 tables(in the Database)
+
+UserID:test Password:1234  (Version: Visual Studo 2017 &SQL Server2016)
+
+The functions of the various forms are as follows :
+
+<1>Login screen
+1. The status of the log in will be displayed below. When you type the wrong ID or Password, it will display an error.
+2. Click on New User and a new form will be invoked. Once a new username is created, click on Submit and it will return to the main Login screen.
+
+<2>List screen
+After successfully logging in through the Login screen, the users can access the various functions displayed as buttons in this screen.
+
+<3>Add new member form
+The MemberID is generated automatically when the user create a new member. After keying in the details for a new member, click on Add to submit. 
+ 
+<4>Member maintenance form
+1. The member maintenance form contains a 'search' button. Click on '...' to search by MemberID and update the details for the selected member.
+2. 'Update' and 'Delete' buttons are available in this form to perform the various functions. Clicking on the 'Back' button brings us back to the List screen.
+
+<5>Add new book form
+The BookID is generated automatically when user create a new book. After keying in the various details(ISBN Number, Book Title etc) for a new book, click on Submit to add the new book into the database.
+
+<6> Book maintenance Form
+1. The book maintenance form contains a 'search' button. Click on '...' to search by Book ID and update the details for the selected book.
+2. 'Update' and 'Delete' buttons are available in this form to perform the various functions. Clicking on the 'Back' button brings us back to the List screen.
+
+<7> Query for Available Date form
+This form helps us search for the status of the books and their current availability status or next available date.
+
+<8>Lending of Books Form
+1.click on 'Search', choose the member ID, and then click on 'Search' below to choose the Book information. After choosing the book information, click on 'Lending' or 'Extension', and the record will be generated/updated.
+2.Return book option is available in the same screen.
+
+<9>Change personal info.
+
+<10>Change password.
+
+<11>Logout.
+
+
+
+

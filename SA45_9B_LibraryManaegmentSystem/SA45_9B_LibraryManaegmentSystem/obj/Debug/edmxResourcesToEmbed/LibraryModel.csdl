@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="LibraryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Book">
+    <Key>
+      <PropertyRef Name="ISBNNumber" />
+    </Key>
+    <Property Name="ISBNNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="BookTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Publisher" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Author" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="BookLanguage" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="CallNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="stockNumber" Type="Int16" />
+    <Property Name="RantedNumber" Type="Int16" />
+    <NavigationProperty Name="IssueTrans" Relationship="Self.FK__IssueTran__ISBNN__33D4B598" FromRole="Book" ToRole="IssueTran" />
+    <Property Name="Genre" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="BookID" Type="Int16" />
+    <Property Name="Category" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Edition" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="PublicationDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="EmployeeID" />
+    </Key>
+    <Property Name="EmployeeID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="EmployeeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="EmployeePhoneNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Title" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="BirthDate" Type="DateTime" Precision="3" />
+    <Property Name="EmployeeAddress" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="IssueTrans" Relationship="Self.FK__IssueTran__Emplo__34C8D9D1" FromRole="Employees" ToRole="IssueTran" />
+    <NavigationProperty Name="UserMaster" Relationship="LibraryModel.FK__UserMaste__Emplo__36B12243" FromRole="Employee" ToRole="UserMaster" />
+  </EntityType>
+  <EntityType Name="IssueTran">
+    <Key>
+      <PropertyRef Name="TransactionID" />
+    </Key>
+    <Property Name="TransactionID" Type="Int16" Nullable="false" />
+    <Property Name="MemberID" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+    <Property Name="ISBNNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="EmployeeID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="DateIssue" Type="DateTime" Precision="3" />
+    <Property Name="DateDue" Type="DateTime" Precision="3" />
+    <Property Name="DateActualReturn" Type="DateTime" Precision="3" />
+    <Property Name="RentalStatus" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+    <Property Name="Remarks" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Book" Relationship="Self.FK__IssueTran__ISBNN__33D4B598" FromRole="IssueTran" ToRole="Book" />
+    <NavigationProperty Name="Employee" Relationship="Self.FK__IssueTran__Emplo__34C8D9D1" FromRole="IssueTran" ToRole="Employees" />
+    <NavigationProperty Name="Member" Relationship="LibraryModel.FK__IssueTran__Membe__35BCFE0A" FromRole="IssueTran" ToRole="Member" />
+  </EntityType>
+  <EntityType Name="Member">
+    <Key>
+      <PropertyRef Name="MemberID" />
+    </Key>
+    <Property Name="MemberID" Type="String" MaxLength="4" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="MemberName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MemberCategory" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNumber" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+    <Property Name="PostAddress" Type="String" MaxLength="65" FixedLength="false" Unicode="true" />
+    <Property Name="PostalCode" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+    <Property Name="EmailAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Notes" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="IssueTrans" Relationship="LibraryModel.FK__IssueTran__Membe__35BCFE0A" FromRole="Member" ToRole="IssueTran" />
+  </EntityType>
+  <EntityType Name="UserMaster">
+    <Key>
+      <PropertyRef Name="EmployeeID" />
+    </Key>
+    <Property Name="EmployeeID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="LoginName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserPassWord" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserPhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Employee" Relationship="LibraryModel.FK__UserMaste__Emplo__36B12243" FromRole="UserMaster" ToRole="Employee" />
+  </EntityType>
+  <Association Name="FK__IssueTran__ISBNN__33D4B598">
+    <End Role="Book" Type="Self.Book" Multiplicity="0..1" />
+    <End Role="IssueTran" Type="Self.IssueTran" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Book">
+        <PropertyRef Name="ISBNNumber" />
+      </Principal>
+      <Dependent Role="IssueTran">
+        <PropertyRef Name="ISBNNumber" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__IssueTran__Emplo__34C8D9D1">
+    <End Role="Employees" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="IssueTran" Type="Self.IssueTran" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="EmployeeID" />
+      </Principal>
+      <Dependent Role="IssueTran">
+        <PropertyRef Name="EmployeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="LibraryEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Books" EntityType="Self.Book" />
+    <EntitySet Name="Employees" EntityType="Self.Employee" />
+    <EntitySet Name="IssueTrans" EntityType="Self.IssueTran" />
+    <EntitySet Name="Members" EntityType="Self.Member" />
+    <EntitySet Name="UserMasters" EntityType="Self.UserMaster" />
+    <AssociationSet Name="FK__IssueTran__ISBNN__33D4B598" Association="Self.FK__IssueTran__ISBNN__33D4B598">
+      <End Role="Book" EntitySet="Books" />
+      <End Role="IssueTran" EntitySet="IssueTrans" />
+    </AssociationSet>
+    <AssociationSet Name="FK__IssueTran__Emplo__34C8D9D1" Association="Self.FK__IssueTran__Emplo__34C8D9D1">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="IssueTran" EntitySet="IssueTrans" />
+    </AssociationSet>
+    <AssociationSet Name="FK__UserMaste__Emplo__36B12243" Association="LibraryModel.FK__UserMaste__Emplo__36B12243">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="UserMaster" EntitySet="UserMasters" />
+    </AssociationSet>
+    <AssociationSet Name="FK__IssueTran__Membe__35BCFE0A" Association="LibraryModel.FK__IssueTran__Membe__35BCFE0A">
+      <End Role="Member" EntitySet="Members" />
+      <End Role="IssueTran" EntitySet="IssueTrans" />
+    </AssociationSet>
+  </EntityContainer>
+  <Association Name="FK__UserMaste__Emplo__36B12243">
+    <End Type="LibraryModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="LibraryModel.UserMaster" Role="UserMaster" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="EmployeeID" />
+      </Principal>
+      <Dependent Role="UserMaster">
+        <PropertyRef Name="EmployeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__IssueTran__Membe__35BCFE0A">
+    <End Type="LibraryModel.Member" Role="Member" Multiplicity="0..1" />
+    <End Type="LibraryModel.IssueTran" Role="IssueTran" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Member">
+        <PropertyRef Name="MemberID" />
+      </Principal>
+      <Dependent Role="IssueTran">
+        <PropertyRef Name="MemberID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
